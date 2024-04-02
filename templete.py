@@ -21,8 +21,8 @@ list_of_files = [
     "params.yaml",
     "requirement.txt",
     "setup.py",
-    "research/trails.ipnb",
-    "remplates/index.html",
+    "research/trails.ipynb",
+    "templates/index.html",
     "torchserve/.keep",
     "torchserver/model-store/.keep"
 ]
