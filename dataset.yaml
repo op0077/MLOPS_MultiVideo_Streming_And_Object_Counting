@@ -1,4 +1,4 @@
-path: C:/Users/opdar/BVM/Mtech admission/iiit banglor/2nd Sem/SPE/End_sem_project/Object_Counting_1
+path: C:/Users/opdar/BVM/Mtech/iiitb/2nd Sem/SPE/End_project/Object_Counting_1
 train: artifacts/data_ingestion/dataset/train/images
 val: artifacts/data_ingestion/dataset/valid/images
 test: artifacts/data_ingestion/dataset/test/images

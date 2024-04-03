@@ -1,0 +1,47 @@
+stages:
+  data_ingestion:
+    cmd: python src/Object_Counting/pipeline/stage_01_data_ingestion.py
+    deps:
+      - src/Object_Counting/pipeline/stage_01_data_ingestion.py
+      - config/config.yaml
+    outs:
+      - artifacts/data_ingestion/dataset  
+
+  prepare_base_mode:
+    cmd: python src/Object_Counting/pipeline/stage_02_prepare_base_model.py
+    deps:
+      - src/Object_Counting/pipeline/stage_02_prepare_base_model.py
+      - config/config.yaml
+    outs:
+      - artifacts/prepare_base_model
+
+  training:
+    cmd: python src/Object_Counting/pipeline/stage_03_training.py
+    deps:
+      - src/Object_Counting/pipeline/stage_03_training.py
+      - config/config.yaml
+      - artifacts/data_ingestion/dataset
+      - artifacts/prepare_base_model
+    params:
+      - EPOCHS
+      - BATCH_SIZE
+    outs:
+      - artifacts/training/model.pt
+
+  evaluation:
+    cmd: python src/Object_Counting/pipeline/stage_04_evaluation.py
+    deps:
+      - src/Object_Counting/pipeline/stage_04_evaluation.py
+      - config/config.yaml
+      - artifacts/data_ingestion/dataset
+      - artifacts/training/model.pt
+    params:
+      - BATCH_SIZE
+    metrics:
+      - scores.json:
+          cache: false
+      
+    outs:
+      - torchserve/models/detection.onnx
+
+  

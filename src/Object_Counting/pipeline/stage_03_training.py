@@ -1,3 +1,9 @@
+import sys
+import os
+
+# Add the 'utils' folder to Python's module search path
+sys.path.append(os.path.abspath('../OBJECT_COUNTING_1'))
+
 from src.Object_Counting.config.configuration import ConfigurationManager
 from src.Object_Counting.components.training import Training
 from src.Object_Counting import logger
