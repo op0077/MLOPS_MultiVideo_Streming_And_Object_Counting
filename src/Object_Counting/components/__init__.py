@@ -1,9 +1,13 @@
 import os 
 import urllib.request as request
 import zipfile
-from src.Object_Counting import logger
-from src.Object_Counting.utils.common import get_size
-from src.Object_Counting.entity.config_entity import DataIngestionConfig
+# from src.Object_Counting import logger
+# from src.Object_Counting.utils.common import get_size
+# from src.Object_Counting.entity.config_entity import DataIngestionConfig
+
+from Object_Counting import logger
+from Object_Counting.utils.common import get_size
+from Object_Counting.entity.config_entity import DataIngestionConfig
 from pathlib import Path
 
 class DataIngestion:

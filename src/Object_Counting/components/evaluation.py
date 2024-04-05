@@ -1,8 +1,11 @@
 
 from ultralytics import YOLO
 import shutil
-from src.Object_Counting.entity.config_entity import EvaluationConfig
-from src.Object_Counting.utils.common import save_json
+# from src.Object_Counting.entity.config_entity import EvaluationConfig
+# from src.Object_Counting.utils.common import save_json
+
+from Object_Counting.entity.config_entity import EvaluationConfig
+from Object_Counting.utils.common import save_json
 from pathlib import Path
 
 class Evaluation:

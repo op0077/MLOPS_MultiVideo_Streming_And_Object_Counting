@@ -1,8 +1,11 @@
 from ultralytics import YOLO
 import shutil
-from src.Object_Counting.entity.config_entity import TrainingConfig
 from pathlib import Path
-from src.Object_Counting.utils.common import update_datasets_dir
+# from src.Object_Counting.entity.config_entity import TrainingConfig
+# from src.Object_Counting.utils.common import update_datasets_dir
+
+from Object_Counting.entity.config_entity import TrainingConfig
+from Object_Counting.utils.common import update_datasets_dir
 
 class Training:
     def __init__(self, config: TrainingConfig):

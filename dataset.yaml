@@ -1,10 +1,11 @@
-path: C:/Users/opdar/BVM/Mtech/iiitb/2nd Sem/SPE/End_project/Object_Counting_1
+# path: C:/Users/opdar/BVM/Mtech/iiitb/2nd Sem/SPE/End_project/Object_Counting_1
+path: /app
 train: artifacts/data_ingestion/dataset/train/images
 val: artifacts/data_ingestion/dataset/valid/images
 test: artifacts/data_ingestion/dataset/test/images
 
 nc: 5
-names: ['bicycle','bus','car','motorbike','person']
+names: ['bicycle', 'bus', 'car', 'motorbike', 'person']
 
 roboflow:
   workspace: fsmvu

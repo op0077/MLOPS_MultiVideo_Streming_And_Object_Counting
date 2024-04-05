@@ -1,7 +1,9 @@
 from ultralytics import YOLO
 import shutil
 from pathlib import Path
-from src.Object_Counting.entity.config_entity import PrepareBaseModelConfig
+# from src.Object_Counting.entity.config_entity import PrepareBaseModelConfig
+
+from Object_Counting.entity.config_entity import PrepareBaseModelConfig
 
 class PrepareBaseModel:
     def __init__(self, config: PrepareBaseModelConfig):

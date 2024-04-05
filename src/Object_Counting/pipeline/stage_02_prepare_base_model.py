@@ -2,11 +2,14 @@ import sys
 import os
 
 # Add the 'utils' folder to Python's module search path
-sys.path.append(os.path.abspath('../OBJECT_COUNTING_1'))
+sys.path.append(os.path.abspath('../OBJECT_COUNTING_1/src'))
 
-from src.Object_Counting.config.configuration import ConfigurationManager
-from src.Object_Counting.components.prepare_base_model import PrepareBaseModel
-from src.Object_Counting import logger
+# from src.Object_Counting.config.configuration import ConfigurationManager
+# from src.Object_Counting.components.prepare_base_model import PrepareBaseModel
+# from src.Object_Counting import logger
+from Object_Counting.config.configuration import ConfigurationManager
+from Object_Counting.components.prepare_base_model import PrepareBaseModel
+from Object_Counting import logger
 
 STAGE_NAME = "Prepare base model"
 
