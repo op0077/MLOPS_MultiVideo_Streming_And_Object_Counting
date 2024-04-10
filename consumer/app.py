@@ -73,6 +73,7 @@ def background_thread():
                 x, y, w, h = map(int, output["box"])
                 class_name = output["class_name"]
                 confidence = output["confidence"]
+                id = output["track_id"]
 
                 # Draw bounding box on the image
                 cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
