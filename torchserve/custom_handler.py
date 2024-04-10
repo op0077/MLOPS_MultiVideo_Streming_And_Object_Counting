@@ -128,18 +128,51 @@ class ModelHandler(BaseHandler):
 
         result_boxes = cv2.dnn.NMSBoxes(boxes, scores, 0.2, 0.3, 0.5)
 
-        detections = []
-        for i in range(len(result_boxes)):
-            index = result_boxes[i]
-            box = boxes[index]
-            detection = {
-                'class_id': class_ids[index],
-                'class_name': class_names[class_ids[index]],
-                'confidence': scores[index],
-                'box': [c.item() for c in box],
-                'scale': self.img_size / 320}
-            # print(detection)
-            detections.append(detection)
+        # detections = []
+        # for i in range(len(result_boxes)):
+        #     index = result_boxes[i]
+        #     box = boxes[index]
+        #     detection = {
+        #         'class_id': class_ids[index],
+        #         'class_name': class_names[class_ids[index]],
+        #         'confidence': scores[index],
+        #         'box': [c.item() for c in box],
+        #         'scale': self.img_size / 320}
+        #     # print(detection)
+        #     detections.append(detection)
 
-        # format each detection
+        # # format each detection
+        # return [detections]
+        filtered_boxes = []
+        filtered_scores = []
+        filtered_class_ids = []
+
+        if result_boxes.any():
+            for i in result_boxes.flatten():
+                filtered_boxes.append(boxes[i])
+                filtered_scores.append(scores[i])
+                filtered_class_ids.append(class_ids[i])
+
+       
+
+        detections= []
+        detect = [(box, score, self.class_names[class_id]) for box, score, class_id in zip(filtered_boxes, filtered_scores, filtered_class_ids)]
+
+        tracked_objects = self.object_tracker.update_tracks(detect,frame=self.frame)
+        for obj in tracked_objects:
+            box = obj.to_tlwh()  # Replace with actual bounding box attribute name
+            detection = {
+                'class_id': self.class_names.index(obj.det_class),
+                'class_name': obj.det_class,
+                'confidence': obj.det_conf,  # Replace with actual confidence score attribute name
+                'box': [c.item() for c in box],
+                'scale': self.img_size / 320,
+                'track_id': obj.track_id  # Assuming a track_id attribute exists
+            }
+            detections.append(detection)
+            # print(obj.track_id
+            # print(obj.det_class,obj.class_name)
+            # obj.detection['track_id'] = obj.track_id
+
         return [detections]
+    
