@@ -25,22 +25,24 @@ class ModelHandler():
         return self.postprocess(model_output,data)
 
     def preprocess(self, data):
-        # images = []
-        # for row in data:
-        #     image = row.get("data") or row.get("body")
-        #     if isinstance(image, str):
-        #         image = base64.b64decode(image)
+        images = []
+        for row in data:
+            image = row.get("data") or row.get("body")
+            if isinstance(image, str):
+                image = base64.b64decode(image)
 
-        #     if isinstance(image, (bytearray, bytes)):
-        #         image = np.frombuffer(image, dtype=np.uint8)
-        #     else:
-        #         image = row
+            if isinstance(image, (bytearray, bytes)):
+                image = np.frombuffer(image, dtype=np.uint8)
+            else:
+                image = row
+            self.frame = cv2.imdecode(image, cv2.IMREAD_COLOR)
 
-        #     images.append(image)
-        # out = np.array(images)
-        # out = cv2.imdecode(out, cv2.IMREAD_COLOR)
+            images.append(image)
+            print(len(image))
+        out = np.array(images)
+        out = cv2.imdecode(out, cv2.IMREAD_COLOR)
 
-        input_img = cv2.resize(data, (320, 320))
+        input_img = cv2.resize(out, (320, 320))
         input_img = input_img / 255.0
         input_img = input_img.transpose(2, 0, 1)
         input_array = input_img[np.newaxis, :, :, :].astype(np.float32)
@@ -111,26 +113,6 @@ class OnnxYoloDetector():
         self.sess = ort.InferenceSession(model_path)
         self.input_name = self.sess.get_inputs()[0].name
 
-    def detect_objects(self, frame):
-        preprocessed_frame = self.preprocess_input(frame.copy())
-        ort_inputs = {self.input_name: preprocessed_frame}
-        ort_outs = self.sess.run(None, ort_inputs)
-        return self.postprocess_output(ort_outs, frame.shape)
-
-    def preprocess_input(self, frame):
-        img_size = 320
-        input_img = cv2.resize(frame, (320, 320))
-        input_img = input_img / 255.0
-        input_img = input_img.transpose(2, 0, 1)
-        input_array = input_img[np.newaxis, :, :, :].astype(np.float32)
-        return input_array
-
-    def postprocess_output(self, inference_output, frame_shape):
-        outputs = np.array(inference_output[0])
-        outputs = np.transpose(outputs, (0, 2, 1))
-        rows = outputs.shape[1]
-        return rows
-
 
 # Initialize model handler
 model_handler = ModelHandler()
@@ -150,7 +132,9 @@ while True:
     up_scale_height = frame.shape[1]/320
     up_scale_width = frame.shape[0]/320
     # Perform object detection and tracking
-    predictions = model_handler.handle(frame)
+    encoded_frame = cv2.imencode('.jpg', frame)[1].tobytes()
+    frame_data = [{'data': encoded_frame}]
+    predictions = model_handler.handle(frame_data)
 
     # Display the resulting frame with object detection and tracking
     for obj in predictions[0]:
