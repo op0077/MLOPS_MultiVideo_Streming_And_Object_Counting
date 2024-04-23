@@ -10,10 +10,10 @@ class ModelHandler():
     def __init__(self):
         # super().__init__()
         self.object_tracker = DeepSort()
-        self.frame_skip = 3
+        self.frame_skip = 2
         self.frame_count = -1
         self.class_names = ['bicycle', 'bus', 'car', 'motorbike', 'person']
-        self.onnx_yolo_detector = self.load_onnx_yolo_detector('models/trained_model_10epoch.onnx')
+        self.onnx_yolo_detector = self.load_onnx_yolo_detector('models/trained_model_60epoch.onnx')
 
     def load_onnx_yolo_detector(self, model_path):
         return OnnxYoloDetector(model_path)
@@ -38,7 +38,7 @@ class ModelHandler():
             self.frame = cv2.imdecode(image, cv2.IMREAD_COLOR)
 
             images.append(image)
-            print(len(image))
+            # print(len(image))
         out = np.array(images)
         out = cv2.imdecode(out, cv2.IMREAD_COLOR)
 
@@ -78,8 +78,9 @@ class ModelHandler():
         filtered_boxes = []
         filtered_scores = []
         filtered_class_ids = []
-
-        if result_boxes.any():
+        # print(type(result_boxes))
+        p = ()
+        if type(result_boxes)!=type(p) and result_boxes.any():
             for i in result_boxes.flatten():
                 filtered_boxes.append(boxes[i])
                 filtered_scores.append(scores[i])
@@ -121,7 +122,7 @@ model_handler = ModelHandler()
 # model_handler.initialize()
 
 # Replace 'path/to/video.mp4' with the path to your video file
-cap = cv2.VideoCapture('C:/Users/opdar/BVM/Mtech/iiitb/2nd Sem/SPE/End_project/Object_Counting_1/producer/videos/video0.mp4')
+cap = cv2.VideoCapture('C:/Users/opdar/BVM/Mtech/iiitb/2nd Sem/SPE/End_project/Object_Counting_1/producer/videos/people.mp4')
 
 while True:
     ret, frame = cap.read()
@@ -140,10 +141,10 @@ while True:
     for obj in predictions[0]:
         # print(obj)
         box = obj['box']
-        cv2.rectangle(frame, (int(box[0]*up_scale_height), int(box[1]*up_scale_width)), (int((box[2]+box[0])*up_scale_height), int((box[3]+box[1])*up_scale_width)), (255, 0, 0), 2)
+        cv2.rectangle(frame, (int(box[0]*up_scale_height), int(box[1]*up_scale_width)), (int((box[2]+box[0])*up_scale_height), int((box[3]+box[1])*up_scale_width)), (255, 255, 0), 2)
 
-        cv2.putText(frame, str(obj['track_id']), (int(box[0]*up_scale_height), int((box[1] - 10)*up_scale_width)), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2)
-
+        cv2.putText(frame, str(obj['track_id']), (int(box[0]*up_scale_height), int((box[1] - 10)*up_scale_width)), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 2)
+    frame = cv2.resize(frame,(1800,900))
     cv2.imshow('Frame', frame)
 
     # Quit if 'q' key is pressed
