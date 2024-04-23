@@ -76,11 +76,11 @@ def background_thread():
                 obj_id = output["track_id"]
 
                 # Draw bounding box on the image
-                cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
+                cv2.rectangle(img, (x, y), (x + w, y + h), (255, 255, 0), 2)
 
                 # Display class name and confidence
                 text = f"{class_name}: {confidence:.2f}"
-                cv2.putText(img, text, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+                cv2.putText(img, obj_id, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 255), 2)
 
 
 
