@@ -10,8 +10,8 @@ pipeline{
         stage('Containers Down'){
             steps{
                 script{
-                    sh 'docker-compose -f kafka/docker-compose.yml down'
-                    sh 'docker-compose -f docker-compose.yml down'
+                    sh 'docker compose -f kafka/docker-compose.yml down'
+                    sh 'docker compose -f docker-compose.yml down'
                 }
             }
         }
@@ -27,8 +27,8 @@ pipeline{
         // stage('Containers Up'){
         //     steps{
         //         script{
-        //             sh 'docker-compose -f kafka/docker-compose.yml up -d'
-        //             sh 'docker-compose -f docker-compose.yml up -d'
+        //             sh 'docker compose -f kafka/docker-compose.yml up -d'
+        //             sh 'docker compose -f docker-compose.yml up -d'
         //         }
         //     }
         // }
