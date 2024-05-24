@@ -17,7 +17,7 @@ pipeline {
             steps {
                 script {
                     def changedFiles = sh(script: "git diff --name-only HEAD~1 HEAD", returnStdout: true).trim()
-                    def modelChanged = changedFiles.split('\n').any { it.startsWith('torchserve/models/') }
+                    def modelChanged = changedFiles.split('\n').any { it.startsWith('src/Object_Counting') }
                     env.MODEL_CHANGED = modelChanged ? 'true' : 'false'
                 }
             }
