@@ -1,0 +1,10 @@
+---
+- name: Deploy Application
+  hosts: localhost
+  connection: local
+
+  tasks:
+    - name: Pull image from Docker hub
+      command: docker compose -f docker-compose.yml pull
+      args:
+        chdir: /var/lib/jenkins/workspace/SPE_major
