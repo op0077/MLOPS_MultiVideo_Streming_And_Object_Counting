@@ -14,6 +14,9 @@ services:
     # command: ["tail", "-f", "/dev/null"]
     command: ["/bin/bash", "./start_script.sh"]
 
+  my_service:
+    build: .
+    image: jd2582/my_service:latest
 
   producer:
     build: ./producer
