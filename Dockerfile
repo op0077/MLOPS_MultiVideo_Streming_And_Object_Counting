@@ -7,8 +7,8 @@ WORKDIR /app
 
 COPY . /app
 RUN pip3 install -r requirements.txt
-RUN dvc init -f
-RUN dvc repro
+# RUN dvc init -f
+# RUN dvc repro
 
 EXPOSE 5000
 EXPOSE 8084
