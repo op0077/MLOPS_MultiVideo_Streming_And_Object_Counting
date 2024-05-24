@@ -13,6 +13,15 @@ pipeline {
             }
         }
         
+        stage('Start Kafka') {
+            steps {
+                script {
+                    sh 'docker network create kafka-network || true'
+                    sh 'docker-compose -f kafka/docker-compose.yml up -d'
+                }
+            }
+        }
+
         stage('Check for changes in model folder') {
             steps {
                 script {
@@ -23,25 +32,19 @@ pipeline {
             }
         }
         
-        stage('Build Docker Image') {
+        stage('Run Docker Compose') {
             steps {
                 script {
                     if (env.MODEL_CHANGED == 'true') {
-                        // Build the full image including the DVC stage
-                        sh 'echo "Model has changed. Building full image with DVC stage."'
-                        // Uncomment the following lines to actually build the image
-                        // sh """
-                        // docker build --target dvc -t ${IMAGE_NAME}:${IMAGE_TAG} .
-                        // docker build --target final -t ${IMAGE_NAME}:${IMAGE_TAG} .
-                        // """
+                        sh 'echo "Model has changed"'
+                        sh 'docker-compose -f docker-compose.yml build --no-cache'
                     } else {
-                        // Build the image without the DVC stage
-                        sh 'echo "No changes in the model folder. Building image without DVC stage."'
-                        // Uncomment the following line to actually build the image
-                        // sh "docker build --target final -t ${IMAGE_NAME}:${IMAGE_TAG} ."
+                        sh 'echo "we dont need to run dvc"'
+                        sh 'docker-compose -f docker-compose_1.yml build --no-cache'
                     }
                 }
             }
         }
+        
     }
 }

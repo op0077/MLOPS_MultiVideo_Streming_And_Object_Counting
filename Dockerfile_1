@@ -1,0 +1,24 @@
+FROM pytorch/torchserve:latest
+
+# Set working directory
+WORKDIR /app
+
+# Copy the necessary files
+COPY . /app
+
+# Install Python dependencies
+RUN pip3 install -r requirements.txt
+
+# Copy DVC-generated artifacts
+COPY artifacts/training/model.pt /app/artifacts/training/model.pt
+COPY torchserve/models/detection.onnx /app/torchserve/models/detection.onnx
+
+EXPOSE 5000
+EXPOSE 8084
+EXPOSE 8081
+EXPOSE 8082
+# Set up TorchServe model
+RUN torchserve --stop
+RUN torch-model-archiver -f --model-name yolov8n --version 1.0 --serialized-file torchserve/models/trained_model_10epoch.onnx --export-path torchserve/model-store --handler torchserve/custom_handler.py
+
+# Expose ports

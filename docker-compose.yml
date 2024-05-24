@@ -4,6 +4,7 @@ services:
   
   consumer:
     build: .
+    dockerfile: Dockefile
     container_name: kafka_consumer
     depends_on:
       - producer
